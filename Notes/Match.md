@@ -15,6 +15,15 @@ it can any type of cases, if the condition will return a expetion
 a exception could be of Result type which ahs two cases Ok and Err,
 	which can be handles this way
 	
+	_ this can be used to handle all rest of the cases with a genreal output
+	
+	match coin {
+		coin::nikel => 10,
+		coin::dime => 2,
+		_ => 0
+	}
+	
+	
 	
 	
 	
