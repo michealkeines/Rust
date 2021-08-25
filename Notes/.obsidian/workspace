@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "TDD Test Driven Development.md",
+            "file": "Iterators and closures.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TDD Test Driven Development.md",
+                "file": "Iterators and closures.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,6 +88,7 @@
   },
   "active": "83f3c5292cad312f",
   "lastOpenFiles": [
+    "Iterators and closures.md",
     "Untitled.md",
     "Common Collections.md",
     "Strings.md",
@@ -96,7 +97,6 @@
     "pub, mod, use, as.md",
     "Match.md",
     "Ownership.md",
-    "Pasted image 20210811081953.png",
-    "Control Flow.md"
+    "Pasted image 20210811081953.png"
   ]
 }
