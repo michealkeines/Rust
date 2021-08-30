@@ -23,3 +23,18 @@ if the type is not explicitly mentioned, then it takes the first call type as it
 test(1); // int type will be infered and set this closure
 test("string") // now if we call it with string, it will throw an error as it is already set to int
 
+fn test() {
+	 let x = 1;
+	 let a = |z| z == x;
+}
+
+this way a closure can access the variable the are in the scope with having to pass it to it.
+
+the variabls that are used inthe closure scope can either take the owership or just as immutable ref, to force the owership we use move
+
+let x = 1;
+let b = |z| z == x; //this will be immutable ref, here closure doesnt take owership
+
+let b = move |z| z == x; // x will be moved and thus no longer valid outside of closure.
+
+

@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Iterators and closures.md",
+            "file": "Smart Pointers.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Iterators and closures.md",
+                "file": "Smart Pointers.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,15 +88,15 @@
   },
   "active": "83f3c5292cad312f",
   "lastOpenFiles": [
-    "Iterators and closures.md",
     "Untitled.md",
+    "Introduction.md",
+    "Iterators and closures.md",
     "Common Collections.md",
     "Strings.md",
     "Traits.md",
     "generics.md",
     "pub, mod, use, as.md",
     "Match.md",
-    "Ownership.md",
-    "Pasted image 20210811081953.png"
+    "Ownership.md"
   ]
 }
