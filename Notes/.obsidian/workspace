@@ -88,6 +88,7 @@
   },
   "active": "83f3c5292cad312f",
   "lastOpenFiles": [
+    "Smart Pointers.md",
     "Untitled.md",
     "Introduction.md",
     "Iterators and closures.md",
@@ -96,7 +97,6 @@
     "Traits.md",
     "generics.md",
     "pub, mod, use, as.md",
-    "Match.md",
-    "Ownership.md"
+    "Match.md"
   ]
 }
