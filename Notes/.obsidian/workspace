@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Smart Pointers.md",
+            "file": "Concurrency.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Smart Pointers.md",
+                "file": "Concurrency.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,14 +88,14 @@
   },
   "active": "83f3c5292cad312f",
   "lastOpenFiles": [
-    "Smart Pointers.md",
     "Untitled.md",
+    "Smart Pointers.md",
+    "generics.md",
     "Introduction.md",
     "Iterators and closures.md",
     "Common Collections.md",
     "Strings.md",
     "Traits.md",
-    "generics.md",
     "pub, mod, use, as.md",
     "Match.md"
   ]
