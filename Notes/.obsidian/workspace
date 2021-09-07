@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "OOP.md",
+            "file": "Patterns and Matching.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "OOP.md",
+                "file": "Patterns and Matching.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -89,6 +89,7 @@
   "active": "83f3c5292cad312f",
   "lastOpenFiles": [
     "Untitled.md",
+    "OOP.md",
     "Ownership.md",
     "Concurrency.md",
     "Smart Pointers.md",
@@ -96,7 +97,6 @@
     "Introduction.md",
     "Iterators and closures.md",
     "Common Collections.md",
-    "Strings.md",
-    "Traits.md"
+    "Strings.md"
   ]
 }
