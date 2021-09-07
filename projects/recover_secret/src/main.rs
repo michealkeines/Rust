@@ -1,5 +1,11 @@
 use std::collections::HashMap;
 
+/*
+    This is approch might be the slowest,
+    i get all possible chars that should be placed after a char,
+    then recursively swap the value till all the chars in the array have the right chars after it
+
+*/
 
 
 fn recover_secret(triplets: Vec<[char; 3]>) -> String {
