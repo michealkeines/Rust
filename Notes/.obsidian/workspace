@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "unsafe rust.md",
+            "file": "Advanced types.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "unsafe rust.md",
+                "file": "Advanced types.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,15 +88,15 @@
   },
   "active": "83f3c5292cad312f",
   "lastOpenFiles": [
-    "unsafe rust.md",
     "Untitled.md",
+    "Introduction.md",
+    "unsafe rust.md",
     "Control Flow.md",
     "Patterns and Matching.md",
     "OOP.md",
     "Ownership.md",
     "Concurrency.md",
     "Smart Pointers.md",
-    "generics.md",
-    "Introduction.md"
+    "generics.md"
   ]
 }
