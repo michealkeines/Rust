@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "linked lists.md",
+            "file": "trees.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "linked lists.md",
+                "file": "trees.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,6 +88,10 @@
   },
   "active": "6b0125ff9e82289e",
   "lastOpenFiles": [
-    "Untitled.md"
+    "trees.md",
+    "storing efficiently.md",
+    "Pasted image 20210914132656.png",
+    "Untitled.md",
+    "linked lists.md"
   ]
 }
