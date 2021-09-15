@@ -14,6 +14,29 @@ red-black tree satisfies a set of rules:
 -> a red node can only have children
 -> any path from the root to its leaves has the same number of black nodes, also known as black-depth
 
+how many red node can there be if a tree is balanced,
+
+as a red node can only come from a black node, there will be at most as many as there are blacknodes.
+
+the longest path (root to farthest NIL) is no more than twice the length of the shortest path (root to nearest NIL)
+
+-> shortest path: all black nodes
+-> largest path: alternating red and black
+
+rotation:
+
+-> alters the structure of a tree by rearranging subtrees
+-> goal is to decrease the height of the tree
+	- red-black trees: maximum height of O(log n)
+	- larger subtrees up, smaller subtrees down
+-> does not affect the order of elements, ie left will be smaller and left will be greater values
+
+![[Pasted image 20210915061047.png]]
+
+![[Pasted image 20210915061224.png]]
+
+
+
 https://brilliant.org/wiki/red-black-tree/
 
 any black node will have 
