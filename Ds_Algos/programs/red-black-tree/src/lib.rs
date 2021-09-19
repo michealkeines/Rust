@@ -125,21 +125,6 @@ impl RBTree {
             }
         }
     }
-    pub fn find(&self, numerical_id: u64) -> Option<IoTDevice> {
-        self.find_r( &self.root, &IoTDevice::new(numerical_id,
-        "".to_owned(), "".to_owned()), )}fn find_r(&self, node:
-        &Tree, dev: &IoTDevice) -> Option<IoTDevice> { match node {
-        Some(n) => { let n = n.borrow(); if n.dev.numerical_id ==
-        dev.numerical_id { Some(n.dev.clone()) } else { match
-        self.check(&n.dev, &dev) { RBOperation::LeftNode => self.find_r(&n.left,
-        dev), RBOperation::RightNode => self.find_r(&n.right, dev), }
-        } } _ => None, }}
-        pub fn walk(&self, callback: impl Fn(&IoTDevice) -> ()) {
-        self.walk_in_order(&self.root, &callback);}fn
-        walk_in_order(&self, node: &Tree, callback: &impl Fn(&IoTDevice) -> ())
-        { if let Some(n) = node { let n = n.borrow();
-        self.walk_in_order(&n.left, callback); callback(&n.dev);
-        self.walk_in_order(&n.right, callback); }}
 }
 
 impl Node {
