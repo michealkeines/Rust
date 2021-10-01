@@ -63,4 +63,33 @@ case3:
 ![[Pasted image 20210914142058.png]]
 
 
+tries:
+	here all the strings could be stored as chars to root node, like ABC ABD 
+									a
+								  /
+								b
+							 /	   \
+						   d		c	
+this way any string can be saved and takes by traversing the tree
+
+
+B-tree:
+	it can have varying amounts of those key-value pairs,
+	they will have maximum number of children defined by the order parameter.
+	
+Rules:
+	each node can only ahve order children
+	each not that is not a left node or root has at least order/2 childern
+	the root node has at least two children
+	all nodes hold order - 1 keys when they have order children
+	all leaf nodes apper on the same level
+	
+self balancing this tree works same way as  red-black tree, 
+
+new keys can only be inserted at the leaf level.
+once the new key has found a node, the node is evaluated to preceding rules, in particular, if there are now more than order - 1 keys, if that is the case, the node has to be split, moving the center key to the parent node
+
+search and insert take o(log(n)) with the reblancing
+
+
 
