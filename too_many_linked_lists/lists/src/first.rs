@@ -28,6 +28,7 @@ impl List {
     pub fn new() -> Self {
         List { head: Link::Empty }
     }
+    
 
     pub fn push(&mut self, value: i32) {
         let new_node =Box::new( Node {
