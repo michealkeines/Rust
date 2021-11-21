@@ -1,5 +1,4 @@
 use std::rc::Rc;
-use std::mem;
 
 type Link<T> = Option<Rc<Node<T>>>;
 
@@ -26,8 +25,8 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 
-impl<T> List<T> {
-    pub fn iter(&self) -> Iter<'_, T> {
+impl<T> List< T> {
+    pub fn iter<'a>(&'a self) -> Iter<'a, T> {
         Iter {
             next: self.head.as_deref()
         }
@@ -38,6 +37,19 @@ impl<T> List<T> {
     pub fn new() -> List<T> {
        List{ 
            head: None
+        }
+    }
+}
+
+impl<T> Drop for List<T> {
+    fn drop(&mut self) {
+        let mut link = self.head.take();
+        while let Some(node) = link {
+            if let Ok(mut n) = Rc::try_unwrap(node) {
+                link = n.next.take();
+            } else {
+                break;
+            }
         }
     }
 }
