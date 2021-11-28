@@ -62,13 +62,13 @@ if a transaction violated this constraint and reads or writes to an accoutn of w
 
 Program Structure:
 
-├─ src
-│  ├─ lib.rs         -> registering modules
-│  ├─ entrypoint.rs  -> entrypoint to the program
-│  ├─ instruction.rs -> program API, (de)serializing instruction data
-│  ├─ processor.rs   -> program logic
-│  ├─ state.rs       -> program objects, (de)serializing state
-│  ├─ error.rs       -> program specific errors
+    ├─ src
+    │  ├─ lib.rs         -> registering modules
+    │  ├─ entrypoint.rs  -> entrypoint to the program
+    │  ├─ instruction.rs -> program API, (de)serializing instruction data
+    │  ├─ processor.rs   -> program logic
+    │  ├─ state.rs       -> program objects, (de)serializing state
+    │  ├─ error.rs       -> program specific errors
 
 The flow of program:
 
@@ -78,6 +78,59 @@ The flow of program:
 -> using the decoded data, the processor will now decide which processing function to use to process the request.
 -> the processor may use state.rs to encode or decode the state of an account which has been passed into the entrypoint.
 
+
+Verfiable Delay Function:
+
+A function that takes a fixed amount of time to execute that produces a proof that it ran, which can be verified in less time than it took to produce.
+
+Siganture Format:
+
+each digital signature is in the binary format and consumes 64 bytes.
+
+Transaction Format:
+
+A transaction contains a compact-array of signatures, followed by a message. Each item in the signature array is a digital signature of the given message.
+
+the solana runtime verifies that the number of signatures matched the number in the first 8 bits of the message header.
+
+it also verfies that each signature was signed by the private key corresponding to the public key at the same index in the message's account addresses array.
+
+Message Header Format:
+
+the message header contains three unsigned 8-bit values,
+
+the first value is the number of required signatures in the containing transaction.
+the second value is the number of the corresponding account addresses that are read-only.
+the third value is the number of read-only accounts addresses not requiring signatures.
+
+Instruction Format:
+
+An instruction contains a program id index, followed by a compact-array of account address indexes, followed by a compact array of opaque 8bit data, the program id index is used to indentify an on-chain program that can interpret the opaque data. the program id index is a unique 8bit index to an account adddress in the message's array of account addresses.
+
+Compact-Array Format:
+
+A compact-array is serialized as the array length, followed by each array item. the array length is a special multi byte encoding called compact-u16
+
+a compact-u16 is a multi-byte encoding of 16 bits. the first byte contains the lower 7 bits of the value in its lower 7bits, if the value is above 0x7f, the high bit is set and the next 7 bits of the value are placed into the lower 7bits of a second byte.
+
+Account address is 32 bytes of arbitrary data.
+
+Storing state between transactions:
+
+if the program needs to store state between transactions, it does so using accounts. accounts inclusde metadata that tells the runtime who is allowed to access the data and how.
+
+the lifetime of an accounts is expressed by a number of fractional native tokens called lamports. Accounts are held in validator memory and pay rent to stay there.
+
+each validator periodically scans all accounts and collects rent.
+
+any account that drops to zero lamports is purged, accounts can be able marked as rent-exempt, if they contain a sufficient number of lamports.
+
+the 256-bit public key is used to lookup an account on-chain
+
+read-only accounts:
+
+transactions can indicate that some of the accounts it references be treated as readonly in order to enable paralled account processing, if a program attempts to modify a readonly account, the transaction is rejected by the runtime.
+
 Program Derived Addresses (PDA):
 
 We'd like some way for the program to own the X tokens while the intermediate program is open and waiting for other party's transaction.
@@ -85,6 +138,18 @@ We'd like some way for the program to own the X tokens while the intermediate pr
 but can programs be given user space owernship of a token account.
 
 the trick is to assign token acount ownership to a PDA of the intermediate program.
+
+
+Using a program derived address, a program may be given the authority over an account and later transfer that authority to another.
+
+this is possible because the program can act as the signed in the transaction that gives authority.
+
+For example, if two users want to make a wager on the outcome of a game in solana, they must each transfer their wager's assets to some intermediary that will honor their agreement. currently there is no way to implement this intermediary as a program in solana because the intermediary program cannot transfer the assets to the winner.
+
+this capability is necessary for many Defi applications since they require assets to be transferred to an escrow agent untill some event occurs that determines the new owner.
+
+
+
 
 
 
