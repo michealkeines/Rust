@@ -1,0 +1,4 @@
+seems like the we use pack all our input paramters into a instruction
+
+and then pass that instruction into sendandconfirm
+
