@@ -33,6 +33,7 @@ fn establish_connection(url: String, commit: CommitmentConfig) -> Client{
 
 fn establish_payer(client: &Client, payer:  &Pubkey) {
 
+
     let lamports = client.get_balance(payer).unwrap();
 
     println!("balane: {:?}\n",lamports);
