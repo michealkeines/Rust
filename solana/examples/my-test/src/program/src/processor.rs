@@ -30,25 +30,25 @@ pub fn process_instruction<'a>(
     msg!("Deserialized input check passed.");
 
     match instruction {
-        MetadataInstruction::Test1(args) => {
-            msg!("Inside test1 match");
-            process_test1(program_id, accounts, args.data, args.is_mutable)
+        MetadataInstruction::CreateMetadataAccount(args) => {
+            msg!("Inside Create Metadata Account match");
+            process_create_metadata_accounts(program_id, accounts, args.data, args.is_mutable)
             
         },
-        MetadataInstruction::Test2(args) => {
-            msg!("Inside test2 match");
-            process_test2(program_id, accounts, args.data, args.update_authority, args.primary_sale_happened)
+        MetadataInstruction::UpdateMetadataAccount(args) => {
+            msg!("Inside Update Metadata Account match");
+            process_update_metadata_accounts(program_id, accounts, args.data, args.update_authority, args.primary_sale_happened)
         },   
     }
 }
 
-fn process_test1<'a>(
+fn process_create_metadata_accounts<'a>(
     program_id: &'a Pubkey,
     accounts: &'a [AccountInfo<'a>],
     data: Data,
     is_mutable: bool
 ) -> ProgramResult { 
-    msg!("Inside Process 1 Function");
+    msg!("Inside process create metadata accounts Function");
 
     let account_info_iter = &mut accounts.iter();
     let metadata_account_info = next_account_info(account_info_iter)?;
@@ -86,14 +86,14 @@ use crate::{
     error::MetadataError
 };
 
-fn process_test2<'a>(
+fn process_update_metadata_accounts<'a>(
     program_id: &'a Pubkey,
     accounts: &'a[AccountInfo<'a>], 
     data: Option<Data>,
     update_authority: Option<Pubkey>,
     primary_sale_happened: Option<bool>
 ) -> ProgramResult {
-    msg!("Inside Process 2 Function");
+    msg!("Inside process update metadata accounts Function");
     let account_info_iter = &mut accounts.iter();
 
     let metadata_account_info = next_account_info(account_info_iter)?;

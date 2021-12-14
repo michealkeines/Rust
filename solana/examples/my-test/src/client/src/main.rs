@@ -1,4 +1,4 @@
-use program_idk::instruction::{ MetadataInstruction, Test1Args, Test2Args };
+use program_idk::instruction::{ MetadataInstruction, CreateMetadataAccountArgs, UpdateMetadataAccountArgs };
 use program_idk::state::{ Data, Creator, Metadata };
 //use program_idk::utils::try_from_slice_unchecked;
 
@@ -146,8 +146,8 @@ fn check_test1(req: &Client, program_id: &Pubkey) -> (Metadata, Pubkey, Pubkey) 
         }])
     };
     //CreateMetadataAccountArgs
-    let update_data = MetadataInstruction::Test1 (
-        Test1Args {
+    let update_data = MetadataInstruction::CreateMetadataAccount (
+        CreateMetadataAccountArgs {
             data: temp_data,
             is_mutable: true
         }
@@ -248,7 +248,7 @@ fn check_test2(req: &Client, program_id: &Pubkey, metadata: &Metadata, metadata_
                 AccountMeta::new(metadata_key, false),
                 AccountMeta::new_readonly(update_authority, true), // payer is the signer
             ],
-            data: MetadataInstruction::Test2(Test2Args {
+            data: MetadataInstruction::UpdateMetadataAccount(UpdateMetadataAccountArgs {
                 data: Some(new_data),
                 update_authority: Some(new_update_authority), // new update authority
                 primary_sale_happened: None,
