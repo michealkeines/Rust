@@ -209,6 +209,8 @@ fn check_program(client: &Client, payer: &Pubkey, pro_pubkey: &Pubkey) -> Pubkey
 
     let test_deserialize: MetadataInstruction = MetadataInstruction::try_from_slice(&update_data).unwrap();
     println!("\n\n\n\n{:?}\n\n\n\n",test_deserialize);
+
+
     // let update_data = MetadataInstruction::testdata(
     //     testargs {
     //         val: UpdateMetadataAccountArgs {
@@ -253,15 +255,7 @@ fn check_program(client: &Client, payer: &Pubkey, pro_pubkey: &Pubkey) -> Pubkey
     // }
 
     instructions.push(new_metadata_instruction);
-        let arr = [
-        247,  44, 145,  42, 156, 254, 127, 211, 249, 218, 142,
-        195, 158, 119, 118, 133,  54,  36, 158,  80, 103, 146,
-        129,  53, 159, 226, 228, 108,  26, 179, 247,  37,  82,
-         93, 107,  19,  98, 150,  38, 212,  20, 130,  43, 169,
-        144, 206, 245,  52, 188, 191,   5,  69,   9,  14,  47,
-        210, 208, 188, 161,  37, 158,   6, 108, 252
-      ];
-    let payert = Keypair::from_bytes(&arr).unwrap();
+
 
     let mut transaction = Transaction::new_with_payer(&instructions, Some(&payer.clone()));
     println!("\n\n\n{:?}\n\n\n",transaction);

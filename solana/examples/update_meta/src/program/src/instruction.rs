@@ -23,9 +23,9 @@ pub struct UpdateMetadataAccountArgs {
 /// Args for create call
 pub struct CreateMetadataAccountArgs {
     /// Note that unique metadatas are disabled for now.
-    pub data: Option<Data>,
+    pub data: Data,
     /// Whether you want your metadata to be updateable in the future.
-    pub is_mutable: Option<bool>,
+    pub is_mutable: bool,
 }
 
 // #[repr(C)]

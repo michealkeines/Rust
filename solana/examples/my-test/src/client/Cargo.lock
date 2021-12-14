@@ -499,11 +499,13 @@ version = "0.1.0"
 dependencies = [
  "borsh 0.9.1",
  "borsh-derive 0.9.1",
+ "program-idk",
  "solana-cli-config",
  "solana-client",
  "solana-client-helpers",
  "solana-program",
  "solana-sdk",
+ "spl-token",
 ]
 
 [[package]]
@@ -2037,6 +2039,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fb37d2df5df740e582f28f8560cf425f52bb267d872fe58358eadb554909f07a"
 dependencies = [
  "unicode-xid 0.2.2",
+]
+
+[[package]]
+name = "program-idk"
+version = "0.1.0"
+dependencies = [
+ "arrayref",
+ "borsh 0.9.1",
+ "borsh-derive 0.9.1",
+ "num-derive",
+ "num-traits",
+ "solana-program",
+ "spl-token",
+ "thiserror",
 ]
 
 [[package]]

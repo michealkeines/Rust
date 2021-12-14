@@ -24,7 +24,6 @@ pub struct Test2Args {
     pub primary_sale_happened: Option<bool>
 }
 
-
 #[derive(BorshSerialize, BorshDeserialize, Clone)]
 pub enum MetadataInstruction {
     Test1(Test1Args),

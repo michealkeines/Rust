@@ -81,6 +81,21 @@ pub fn assert_token_program_matches_package(token_program_info: &AccountInfo) ->
     Ok(())
 }
 
+pub fn assert_update_authority_is_correct(
+    metadata: &Metadata,
+    update_authority_info: &AccountInfo,
+) -> ProgramResult {
+    if metadata.update_authority != *update_authority_info.key {
+        return Err(MetadataError::UpdateAuthorityIncorrect.into());
+    }
+
+    if !update_authority_info.is_signer {
+        return Err(MetadataError::UpdateAuthorityIsNotSigner.into());
+    }
+
+    Ok(())
+}
+
 pub fn try_from_slice_checked<T: BorshDeserialize>(
     data: &[u8],
     data_type: Key,
@@ -176,9 +191,10 @@ pub fn process_create_metadata_accounts_logic(
         system_account_info,
         rent_info,
     } = accounts;
-
+    msg!("inside create metadata account logic");
     let mut update_authority_key = *update_authority_info.key;
     let existing_mint_authority = get_mint_authority(mint_info)?;
+    msg!("got mint authority");
     // IMPORTANT NOTE
     // This allows the Metaplex Foundation to Create but not update metadata for SPL tokens that have not populated their metadata.
     assert_mint_authority_matches_mint(&existing_mint_authority, mint_authority_info).or_else(
@@ -196,8 +212,9 @@ pub fn process_create_metadata_accounts_logic(
             }
         },
     )?;
+    msg!("assert mint auth matches mint");
     assert_owned_by(mint_info, &spl_token::id())?;
-
+    msg!("asset owned by");
     let metadata_seeds = &[
         PREFIX.as_bytes(),
         program_id.as_ref(),
@@ -215,6 +232,7 @@ pub fn process_create_metadata_accounts_logic(
     if metadata_account_info.key != &metadata_key {
         return Err(MetadataError::InvalidMetadataKey.into());
     }
+    msg!("all set for creating account igues");
 
     create_or_allocate_account_raw(
         *program_id,
@@ -226,7 +244,10 @@ pub fn process_create_metadata_accounts_logic(
         metadata_authority_signer_seeds,
     )?;
 
+    msg!("created account");
+
     let mut metadata = Metadata::from_account_info(metadata_account_info)?;
+    msg!("got metadata account info");
     assert_data_valid(
         &data,
         &update_authority_key,
@@ -235,7 +256,7 @@ pub fn process_create_metadata_accounts_logic(
         update_authority_info.is_signer,
         false,
     )?;
-
+    msg!("assert created account");
     metadata.mint = *mint_info.key;
     metadata.key = Key::MetadataV1;
     metadata.data = data;
@@ -243,6 +264,7 @@ pub fn process_create_metadata_accounts_logic(
     metadata.update_authority = update_authority_key;
 
     puff_out_data_fields(&mut metadata);
+    msg!("puffed data fields");
 
     let edition_seeds = &[
         PREFIX.as_bytes(),
@@ -252,8 +274,11 @@ pub fn process_create_metadata_accounts_logic(
     ];
     let (_, edition_bump_seed) = Pubkey::find_program_address(edition_seeds, program_id);
     metadata.edition_nonce = Some(edition_bump_seed);
+    msg!("found a program address");
 
     metadata.serialize(&mut *metadata_account_info.data.borrow_mut())?;
+
+    msg!("serialized alla data");
 
     Ok(())
 }
@@ -266,31 +291,33 @@ pub fn assert_data_valid(
     update_authority_is_signer: bool,
     is_updating: bool,
 ) -> ProgramResult {
+    msg!("insside assert data vaild for metadata account");
     if data.name.len() > MAX_NAME_LENGTH {
         return Err(MetadataError::NameTooLong.into());
     }
-
+    msg!("name lenght passed");
     if data.symbol.len() > MAX_SYMBOL_LENGTH {
         return Err(MetadataError::SymbolTooLong.into());
     }
-
+    msg!("symbol length passed");
     if data.uri.len() > MAX_URI_LENGTH {
         return Err(MetadataError::UriTooLong.into());
     }
-
+    msg!("uril length passed");
     if data.seller_fee_basis_points > 10000 {
         return Err(MetadataError::InvalidBasisPoints.into());
     }
-
+    msg!("selller base points passed");
     if data.creators.is_some() {
         if let Some(creators) = &data.creators {
             if creators.len() > MAX_CREATOR_LIMIT {
                 return Err(MetadataError::CreatorsTooLong.into());
             }
-
+            msg!("created limit passed");
             if creators.is_empty() {
                 return Err(MetadataError::CreatorsMustBeAtleastOne.into());
             } else {
+                msg!("creators array not empty");
                 let mut found = false;
                 let mut total: u8 = 0;
                 for i in 0..creators.len() {
@@ -300,7 +327,7 @@ pub fn assert_data_valid(
                             return Err(MetadataError::DuplicateCreatorAddress.into());
                         }
                     }
-
+                    msg!("create address not deuplicate");
                     total = total
                         .checked_add(creator.share)
                         .ok_or(MetadataError::NumericalOverflowError)?;
@@ -308,7 +335,7 @@ pub fn assert_data_valid(
                     if creator.address == *update_authority {
                         found = true;
                     }
-
+                    msg!("found: {}",found);
                     // Dont allow metadata owner to unilaterally say a creator verified...
                     // cross check with array, only let them say verified=true here if
                     // it already was true and in the array.
@@ -316,12 +343,14 @@ pub fn assert_data_valid(
                     if (!update_authority_is_signer || creator.address != *update_authority)
                         && !allow_direct_creator_writes
                     {
+                        msg!("inside the metadata owner verify write access check");
                         if let Some(existing_creators) = &existing_metadata.data.creators {
                             match existing_creators
                                 .iter()
                                 .find(|c| c.address == creator.address)
                             {
                                 Some(existing_creator) => {
+                                    msg!("Some {:?}",existing_creator);
                                     if creator.verified && !existing_creator.verified {
                                         return Err(
                                             MetadataError::CannotVerifyAnotherCreator.into()
@@ -333,6 +362,7 @@ pub fn assert_data_valid(
                                     }
                                 }
                                 None => {
+                                    msg!("None {:?}",creator);
                                     if creator.verified {
                                         return Err(
                                             MetadataError::CannotVerifyAnotherCreator.into()
@@ -340,20 +370,25 @@ pub fn assert_data_valid(
                                     }
                                 }
                             }
+                            msg!("passed exisisting metadata somtigijidjid");
                         } else {
+                            msg!("{:?}",creator);
                             if creator.verified {
                                 return Err(MetadataError::CannotVerifyAnotherCreator.into());
                             }
+                            msg!("creator verified");
                         }
                     }
                 }
-
+                msg!("found allow, is updating check");
                 if !found && !allow_direct_creator_writes && !is_updating {
                     return Err(MetadataError::MustBeOneOfCreators.into());
                 }
+                msg!("allow direct access to creteor wirtes");
                 if total != 100 {
                     return Err(MetadataError::ShareTotalMustBe100.into());
                 }
+                msg!("somehingis not equal to 100");
             }
         }
     }
@@ -413,19 +448,25 @@ pub fn create_or_allocate_account_raw<'a>(
 /// This supports the `memcmp` filter  on get program account calls.
 /// NOTE: it is assumed that the metadata fields are never larger than the respective MAX_LENGTH
 pub fn puff_out_data_fields(metadata: &mut Metadata) {
+    msg!("inside puff out data fields");
     metadata.data.name = puffed_out_string(&metadata.data.name, MAX_NAME_LENGTH);
+    msg!("after fist");
     metadata.data.symbol = puffed_out_string(&metadata.data.symbol, MAX_SYMBOL_LENGTH);
+    msg!("after second");
     metadata.data.uri = puffed_out_string(&metadata.data.uri, MAX_URI_LENGTH);
+    msg!("after thrid");
 }
 
 /// Pads the string to the desired size with `0u8`s.
 /// NOTE: it is assumed that the string's size is never larger than the given size.
 pub fn puffed_out_string(s: &String, size: usize) -> String {
+    msg!("input: {:?}",s);
     let mut array_of_zeroes = vec![];
     let puff_amount = size - s.len();
     while array_of_zeroes.len() < puff_amount {
         array_of_zeroes.push(0u8);
     }
+    msg!("before unwraping");
     s.clone() + std::str::from_utf8(&array_of_zeroes).unwrap()
 }
 

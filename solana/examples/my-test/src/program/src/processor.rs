@@ -80,6 +80,11 @@ fn process_test1<'a>(
     //Ok(())
 
 }
+use crate::{
+    utils::{assert_owned_by, assert_update_authority_is_correct, assert_data_valid, puff_out_data_fields},
+    state::Metadata,
+    error::MetadataError
+};
 
 fn process_test2<'a>(
     program_id: &'a Pubkey,
@@ -89,6 +94,46 @@ fn process_test2<'a>(
     primary_sale_happened: Option<bool>
 ) -> ProgramResult {
     msg!("Inside Process 2 Function");
+    let account_info_iter = &mut accounts.iter();
+
+    let metadata_account_info = next_account_info(account_info_iter)?;
+    let update_authority_info = next_account_info(account_info_iter)?;
+    let mut metadata = Metadata::from_account_info(metadata_account_info)?;
+
+    assert_owned_by(metadata_account_info, program_id)?;
+    assert_update_authority_is_correct(&metadata, update_authority_info)?;
+
+    if let Some(optional_data) = data {
+        if metadata.is_mutable {
+            assert_data_valid(
+                &optional_data,
+                update_authority_info.key,
+                &metadata,
+                false,
+                update_authority_info.is_signer,
+                true,
+            )?;
+            metadata.data = optional_data;
+        } else {
+            return Err(MetadataError::DataIsImmutable.into());
+        }
+    }
+    msg!("input data is valid");
+    if let Some(val) = update_authority {
+        metadata.update_authority = val;
+    }
+
+    if let Some(val) = primary_sale_happened {
+        if val {
+            metadata.primary_sale_happened = val
+        } else {
+            return Err(MetadataError::PrimarySaleCanOnlyBeFlippedToTrue.into());
+        }
+    }
+    msg!("is primary sale chek");
+    puff_out_data_fields(&mut metadata);
+    msg!("puffed feilds");
+    metadata.serialize(&mut *metadata_account_info.data.borrow_mut())?;
     Ok(())
 }
 
