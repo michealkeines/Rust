@@ -1,10 +1,10 @@
-use program_idk::instruction::{ MetadataInstruction, CreateMetadataAccountArgs, UpdateMetadataAccountArgs };
-use program_idk::state::{ Data, Creator, Metadata };
+use program_idk::instruction::{ MetadataInstruction, CreateMetadataAccountArgs, UpdateMetadataAccountArgs, CreateMasterEditionArgs };
+use program_idk::state::{ Data, Creator, Metadata, MasterEditionV2 };
 //use program_idk::utils::try_from_slice_unchecked;
 
 use std::str::FromStr;
 use borsh::{BorshDeserialize, BorshSerialize};
-use std::mem;
+
 use solana_sdk::{
     commitment_config::CommitmentConfig,
     instruction::{AccountMeta, Instruction},
@@ -36,7 +36,9 @@ use spl_token::{
     state::{Account, Mint},
 };
 
-pub const PREFIX: &str = "metadata";
+use program_idk::state::{
+    EDITION, PREFIX
+};
 
 pub fn try_from_slice_unchecked<T: BorshDeserialize>(data: &[u8]) -> Result<T, Error> {
     let mut data_mut = data;
@@ -44,7 +46,7 @@ pub fn try_from_slice_unchecked<T: BorshDeserialize>(data: &[u8]) -> Result<T, E
     Ok(result)
 }
 
-
+const TOKEN_PROGRAM_PUBKEY: &str = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 
 fn establish_connection() -> Client{
     let arr = [
@@ -66,7 +68,7 @@ fn establish_connection() -> Client{
     client
 }
 
-fn check_test1(req: &Client, program_id: &Pubkey) -> (Metadata, Pubkey, Pubkey) {
+fn create_metadata_account_test(req: &Client, program_id: &Pubkey) -> (Metadata, Pubkey, Pubkey) {
     let program_info = req.get_account(program_id).unwrap(); // get information about the programid
 
     if !program_info.executable { // check if it is executable
@@ -86,7 +88,7 @@ fn check_test1(req: &Client, program_id: &Pubkey) -> (Metadata, Pubkey, Pubkey) 
     let payer: Keypair = Keypair::from_bytes(&arr).unwrap(); // 
 
     /// Metaplex token program id, we will use this to create a mint token
-    const TOKEN_PROGRAM_PUBKEY: &str = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+   
 
     let wall_arr = [244,194,241,225,15,191,246,159,209,33,185,63,66,83,136,245,229,137,231,131,162,22,138,183,202,60,4,145,145,154,181,47,49,225,231,18,254,186,11,157,121,238,174,50,155,59,5,159,240,115,170,215,77,184,187,3,206,62,248,3,130,161,22,169];
 
@@ -193,7 +195,7 @@ fn check_test1(req: &Client, program_id: &Pubkey) -> (Metadata, Pubkey, Pubkey) 
     (metadata, metadata_key, mint_key)
 }
 
-fn check_test2(req: &Client, program_id: &Pubkey, metadata: &Metadata, metadata_key: &Pubkey, mint_key: &Pubkey)
+fn update_metadata_account_test(req: &Client, program_id: &Pubkey, metadata: &Metadata, metadata_key: &Pubkey, mint_key: &Pubkey)
 -> (Metadata, Pubkey) {
     let program_info = req.get_account(program_id).unwrap(); // get deployed program information
 
@@ -278,15 +280,130 @@ fn check_test2(req: &Client, program_id: &Pubkey, metadata: &Metadata, metadata_
     (metadata, metadata_key)
 }
 
+fn create_master_edition_test(req: &Client, program_id: &Pubkey, mint_key: &Pubkey) -> (MasterEditionV2, Pubkey) {
+    let arr: [u8;64] = [
+        247,  44, 145,  42, 156, 254, 127, 211, 249, 218, 142,
+        195, 158, 119, 118, 133,  54,  36, 158,  80, 103, 146,
+        129,  53, 159, 226, 228, 108,  26, 179, 247,  37,  82,
+         93, 107,  19,  98, 150,  38, 212,  20, 130,  43, 169,
+        144, 206, 245,  52, 188, 191,   5,  69,   9,  14,  47,
+        210, 208, 188, 161,  37, 158,   6, 108, 252
+      ];
+    let payer: Keypair = Keypair::from_bytes(&arr).unwrap(); // deployed program keypair
+
+    let program_key = program_id;
+    let token_key = Pubkey::from_str(TOKEN_PROGRAM_PUBKEY).unwrap();
+
+    let update_authority = &payer; // update_authority for our mint
+    let mint_authority = &payer; // mint authority for our mint
+
+    let metadata_seeds = &[PREFIX.as_bytes(), &program_key.as_ref(), mint_key.as_ref()]; // seed for metadata account
+    let (metadata_key, _) = Pubkey::find_program_address(metadata_seeds, &program_key); // get pubkey for metadata account
+
+    let metadata_account = req.get_account(&metadata_key).unwrap();
+    let metadata: Metadata = try_from_slice_unchecked(&metadata_account.data).unwrap(); // get data from metadata account
+
+    let master_edition_seeds = &[ // seed for master edition that we will create
+        PREFIX.as_bytes(),
+        &program_key.as_ref(),
+        &metadata.mint.as_ref(),
+        EDITION.as_bytes()
+    ]; 
+                                                // Pubkey found using the masteredition seed
+    let (master_edition_key, _) = Pubkey::find_program_address(master_edition_seeds, &program_key);
+
+    let max_supply = 10; // max supply 10
+
+    let added_token_account = Keypair::new(); // new key pair for token account
+
+    let mut signers = vec![update_authority, mint_authority]; // all signers
+    signers.push(&added_token_account);
+
+    let mut instructions = vec![];
+
+    let create_token_account_ins = create_account(
+        &payer.pubkey(),
+        &added_token_account.pubkey(),
+        req
+            .get_minimum_balance_for_rent_exemption(165)
+            .unwrap(),
+        165,
+        &token_key,
+    );
+
+    let initialize_account_ins = initialize_account(
+        &token_key,
+        &added_token_account.pubkey(),
+        &metadata.mint,
+        &payer.pubkey(),
+    )
+    .unwrap();
+
+    let mint_to_ins = mint_to(
+        &token_key,
+        &metadata.mint,
+        &added_token_account.pubkey(),
+        &payer.pubkey(),
+        &[&payer.pubkey()],
+        1,
+    )
+    .unwrap();
+
+    instructions.push(create_token_account_ins);
+    instructions.push(initialize_account_ins);
+    instructions.push(mint_to_ins);
+
+    let accounts = vec![
+        AccountMeta::new(master_edition_key, false),
+        AccountMeta::new(mint_key.clone(), false),
+        AccountMeta::new_readonly(update_authority.pubkey(), true),
+        AccountMeta::new_readonly(mint_authority.pubkey(), true),
+        AccountMeta::new(payer.pubkey(), true),
+        AccountMeta::new_readonly(metadata_key, false),
+        AccountMeta::new_readonly(spl_token::id(), false),
+        AccountMeta::new_readonly(solana_program::system_program::id(), false),
+        AccountMeta::new_readonly(sysvar::rent::id(), false),
+    ];
+
+    let create_master_edition_ins = Instruction {
+        program_id: program_key.clone(),
+        accounts,
+        data: MetadataInstruction::CreateMasterEdition(CreateMasterEditionArgs { max_supply: Some(max_supply) })
+        .try_to_vec()
+        .unwrap()
+    };
+
+    instructions.push(create_master_edition_ins);
+    
+    // sign the transaction with payer
+    let mut transaction = Transaction::new_with_payer(&instructions, Some(&payer.pubkey()));
+
+    //get recent block hash
+    let recent_blockhash = req.get_recent_blockhash().unwrap().0;
+
+    transaction.sign(&signers, recent_blockhash); // sign call
+
+    req.send_and_confirm_transaction(&transaction).unwrap();
+
+    let account = req.get_account(&master_edition_key).unwrap();
+    let master_edition: MasterEditionV2 = try_from_slice_unchecked(&account.data).unwrap();
+    (master_edition, master_edition_key)
+
+
+}
 
 
 fn main() {
     let req = establish_connection();
     let program_id = Pubkey::from_str("CFzwMLnq9GgLCfqiV2LGhTLqsdNsKKGv2A82AtD5FZo4").unwrap();
 
-    let (metadata, metadata_key, mint_key) =  check_test1(&req, &program_id);
+    let (metadata, metadata_key, mint_key) =  create_metadata_account_test(&req, &program_id);
     println!("Current Update Authoriry for mint {:?} is {:?}\n",metadata.mint, metadata.update_authority);
     
-    let (metadata, metadata_key) = check_test2(&req, &program_id, &metadata, &metadata_key, &mint_key);
-    println!("Updated Authority for mint {:?} is {:?}\n",metadata.mint, metadata.update_authority);
+     let (metadata, metadata_key) = update_metadata_account_test(&req, &program_id, &metadata, &metadata_key, &mint_key);
+     println!("Updated Authority for mint {:?} is {:?}\n",metadata.mint, metadata.update_authority);
+
+
+
+
 }

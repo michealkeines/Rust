@@ -24,8 +24,16 @@ pub struct UpdateMetadataAccountArgs {
     pub primary_sale_happened: Option<bool>
 }
 
+#[repr(C)]
+#[derive(BorshSerialize, BorshDeserialize, PartialEq, Debug, Clone)]
+pub struct CreateMasterEditionArgs {
+    /// If set, means that no more than this number of editions can ever be minted. This is immutable.
+    pub max_supply: Option<u64>,
+}
+
 #[derive(BorshSerialize, BorshDeserialize, Clone)]
 pub enum MetadataInstruction {
     CreateMetadataAccount(CreateMetadataAccountArgs),
     UpdateMetadataAccount(UpdateMetadataAccountArgs),
+    CreateMasterEdition(CreateMasterEditionArgs),
 }

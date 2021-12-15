@@ -54,6 +54,8 @@ pub const MAX_EDITION_MARKER_SIZE: usize = 32;
 
 pub const EDITION_MARKER_BIT_SIZE: u64 = 248;
 
+pub const TOKEN_PROGRAM_PUBKEY: &str = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+
 #[repr(C)]
 #[derive(BorshSerialize, BorshDeserialize, PartialEq, Debug, Clone, Copy)]
 pub enum Key {
