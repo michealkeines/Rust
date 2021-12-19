@@ -12,7 +12,8 @@ use crate::{
      instruction::{MetadataInstruction},
      state::{ Key, MasterEditionV2, Data, Creator, PREFIX, EDITION, MAX_MASTER_EDITION_LEN},
      utils::{
-         CreateMetadataAccountsLogicArgs, process_create_metadata_accounts_logic
+         CreateMetadataAccountsLogicArgs, process_create_metadata_accounts_logic,
+         MintNewEditionFromMasterEditionViaTokenLogicArgs, process_mint_new_edition_from_master_edition_via_token_logic
     },
 };
 use spl_token::state::{Account, Mint};
@@ -60,6 +61,10 @@ pub fn process_instruction<'a>(
         MetadataInstruction::CreateMasterEdition(args) => {
             msg!("Inside Create Master Edition match");
             process_create_master_edition(program_id, accounts, args.max_supply)
+        },
+        MetadataInstruction::MintNewEditionFromMasterEditionViaToken(args) => {
+            msg!("Inside Mint new Edition from Master edition using Token account match");
+            process_mint_new_edition_from_master_edition_via_token(program_id, accounts, args.edition, false)
         }
     }
 }
@@ -248,4 +253,50 @@ pub fn process_create_master_edition(
     )?;
 
     Ok(())
+}
+
+pub fn process_mint_new_edition_from_master_edition_via_token<'a>(
+    program_id: &'a Pubkey,
+    accounts: &'a [AccountInfo<'a>],
+    edition: u64,
+    ignore_owner_signer: bool,
+) -> ProgramResult {
+    let account_info_iter = &mut accounts.iter();
+
+    let new_metadata_account_info = next_account_info(account_info_iter)?;
+    let new_edition_account_info = next_account_info(account_info_iter)?;
+    let master_edition_account_info = next_account_info(account_info_iter)?;
+    let mint_info = next_account_info(account_info_iter)?;
+    let edition_marker_info = next_account_info(account_info_iter)?;
+    let mint_authority_info = next_account_info(account_info_iter)?;
+    let payer_account_info = next_account_info(account_info_iter)?;
+    let owner_account_info = next_account_info(account_info_iter)?;
+    let token_account_info = next_account_info(account_info_iter)?;
+    let update_authority_info = next_account_info(account_info_iter)?;
+    let master_metadata_account_info = next_account_info(account_info_iter)?;
+    let token_program_account_info = next_account_info(account_info_iter)?;
+    let system_account_info = next_account_info(account_info_iter)?;
+    let rent_info = next_account_info(account_info_iter)?;
+
+    process_mint_new_edition_from_master_edition_via_token_logic(
+        &program_id,
+        MintNewEditionFromMasterEditionViaTokenLogicArgs {
+            new_metadata_account_info,
+            new_edition_account_info,
+            master_edition_account_info,
+            mint_info,
+            edition_marker_info,
+            mint_authority_info,
+            payer_account_info,
+            owner_account_info,
+            token_account_info,
+            update_authority_info,
+            master_metadata_account_info,
+            token_program_account_info,
+            system_account_info,
+            rent_info,
+        },
+        edition,
+        ignore_owner_signer,
+    )
 }

@@ -31,9 +31,17 @@ pub struct CreateMasterEditionArgs {
     pub max_supply: Option<u64>,
 }
 
+#[repr(C)]
+#[derive(BorshSerialize, BorshDeserialize, PartialEq, Debug, Clone)]
+pub struct MintNewEditionFromMasterEditionViaTokenArgs {
+    pub edition: u64,
+}
+
+
 #[derive(BorshSerialize, BorshDeserialize, Clone)]
 pub enum MetadataInstruction {
     CreateMetadataAccount(CreateMetadataAccountArgs),
     UpdateMetadataAccount(UpdateMetadataAccountArgs),
     CreateMasterEdition(CreateMasterEditionArgs),
+    MintNewEditionFromMasterEditionViaToken(MintNewEditionFromMasterEditionViaTokenArgs)
 }
