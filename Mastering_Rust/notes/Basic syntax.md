@@ -35,6 +35,7 @@ now a , b, c will hold the corresponding values
 
 ![[Pasted image 20220403064858.png]]
 
+cargo test -- --nocapture to get prinlln ouputs during tests
 
 ![[Pasted image 20220403065923.png]]
 
@@ -51,4 +52,41 @@ a single test function can alsoo be run by specifying the function name after ca
 Traits
 
 ![[Pasted image 20220403094704.png]]
+
+
+
+![[Pasted image 20220415055611.png]]
+
+
+![[Pasted image 20220415055629.png]]
+
+
+move
+
+![[Pasted image 20220415075324.png]]
+
+
+![[Pasted image 20220415075857.png]]
+
+![[Pasted image 20220415081818.png]]
+
+![[Pasted image 20220415083312.png]]
+
+Dispatch
+
+![[Pasted image 20220415085846.png]]
+
+![[Pasted image 20220415092234.png]]
+
+![[Pasted image 20220415092246.png]]
+
+
+![[Pasted image 20220415092659.png]]
+
+RAII
+
+RAII stands for Resource Acquisition Is Initialization; a paradigm suggesting that resources must be acquired during initialization of objects and must be released when they are deallocated or their destructors are called.
+
+![[Pasted image 20220415093726.png]]
+
 
