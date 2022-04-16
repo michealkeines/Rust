@@ -105,3 +105,34 @@ Iterator invalidation
 
 ![[Pasted image 20220416021056.png]]
 
+Borrowing
+
+The macros print!, println!, eprint!, eprintln!, write!, writeln! and format! are a special case and implicitly take a reference to any arguments to be formatted.
+let a = 10;
+if we use printlln!("{}", a);
+
+it will acutally take &a under the hood
+
+![[Pasted image 20220416064839.png]]
+
+![[Pasted image 20220416070152.png]]
+
+match expression move all values by default so we can use ref keyword to explically amke it a reference
+
+
+![[Pasted image 20220416072757.png]]
+
+'static means it is alilive till the whole programm
+
+![[Pasted image 20220416073008.png]]
+
+![[Pasted image 20220416073118.png]]
+
+![[Pasted image 20220416073405.png]]
+
+life time subtyping
+
+![[Pasted image 20220416081517.png]]
+
+![[Pasted image 20220416083019.png]]
+
