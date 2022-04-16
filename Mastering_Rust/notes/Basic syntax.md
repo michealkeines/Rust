@@ -90,3 +90,18 @@ RAII stands for Resource Acquisition Is Initialization; a paradigm suggesting th
 ![[Pasted image 20220415093726.png]]
 
 
+Iterator invalidation
+
+![[Pasted image 20220416011629.png]]
+
+
+![[Pasted image 20220416015330.png]]
+
+
+![[Pasted image 20220416015723.png]]
+
+![[Pasted image 20220416020932.png]]
+
+
+![[Pasted image 20220416021056.png]]
+
