@@ -136,3 +136,41 @@ life time subtyping
 
 ![[Pasted image 20220416083019.png]]
 
+Raw pointers
+
+![[Pasted image 20220417065713.png]]
+
+![[Pasted image 20220417071545.png]]
+
+
+
+drop is called on the last object that is in the code from top to bottom
+
+![[Pasted image 20220417072003.png]]
+
+![[Pasted image 20220417072145.png]]
+
+![[Pasted image 20220417073920.png]]
+
+![[Pasted image 20220417074021.png]]
+
+
+![[Pasted image 20220417074109.png]]
+
+![[Pasted image 20220417081528.png]]
+
+![[Pasted image 20220417084428.png]]
+
+Intermutability
+
+![[Pasted image 20220417085136.png]]
+
+![[Pasted image 20220417085236.png]]
+
+refcell borrow is checked in runtime this if there is a immutable and mutable borrow in same scope, the compiler will not say anytihng, but in runtime it will panic and exit
+
+programmers are responsible for this checks
+
+![[Pasted image 20220417085900.png]]
+
+
