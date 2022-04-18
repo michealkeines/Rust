@@ -174,3 +174,7 @@ programmers are responsible for this checks
 ![[Pasted image 20220417085900.png]]
 
 
+Error Handling
+
+![[Pasted image 20220418092654.png]]
+
