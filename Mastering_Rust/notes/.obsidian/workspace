@@ -11,7 +11,7 @@
           "state": {
             "file": "Basic syntax.md",
             "mode": "source",
-            "source": false
+            "source": true
           }
         }
       }

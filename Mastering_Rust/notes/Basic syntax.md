@@ -201,7 +201,39 @@ converting between option and result
 
 
 
+![[Pasted image 20220423080833.png]]
+
+
+we can use 
+
+let a = 10;
+
+let b = &a;
+
+or we can use ref keyword
+
+let ref b = a;
+
+
+![[Pasted image 20220423081614.png]]
+
+
+we can use ref and mut ref to borrow valuess inside match statements
 
 
 
+let destructure pattern can be used in function paramters too
+
+if let <destructive pattern> = expression {}
+
+function test(<destructive pattern>: expression )
+
+
+we can use loop statement and return the value 
+
+loop {
+	break 12;
+}
+
+this will return 12 as the return value
 
