@@ -173,8 +173,35 @@ programmers are responsible for this checks
 
 ![[Pasted image 20220417085900.png]]
 
+dyn keyword
+
+fn test(arg: Box<dyn test_trait>)
+
+unlike generic traits, the compiler doesnt know the contrete type that will be passed
+
+this helps the compilter to know that it iwll dispatched dynaimcally in the runtime
+
 
 Error Handling
 
 ![[Pasted image 20220418092654.png]]
+
+![[Pasted image 20220419114750.png]]
+
+![[Pasted image 20220423004719.png]]
+
+converting between option and result
+
+![[Pasted image 20220423004943.png]]
+
+ A panic in one thread does not affect the other threads and is isolated, except in cases where they corrupt a mutex lock on some shared data; it is implemented as a macro by the same panic! mechanism
+
+
+![[Pasted image 20220423023735.png]]
+
+
+
+
+
+
 
