@@ -175,7 +175,10 @@ programmers are responsible for this checks
 
 dyn keyword
 
+```
 fn test(arg: Box<dyn test_trait>)
+
+```
 
 unlike generic traits, the compiler doesnt know the contrete type that will be passed
 
@@ -224,10 +227,12 @@ we can use ref and mut ref to borrow valuess inside match statements
 
 let destructure pattern can be used in function paramters too
 
+```
 if let <destructive pattern> = expression {}
 
 function test(<destructive pattern>: expression )
 
+```
 
 we can use loop statement and return the value 
 
@@ -236,4 +241,50 @@ loop {
 }
 
 this will return 12 as the return value
+
+
+type alias
+
+type newname = actual_long_type;
+
+
+		type Test<E, T> = Result<ParsedError<E>, ParsedGet<T>>
+
+the simple name should all have the generic specification if any
+
+lifetimes should also be specified if any
+
+
+
+Rust string
+
+String = owned strings
+
+&str = borrowed strings
+
+![[Pasted image 20220424013231.png]]
+
+
+![[Pasted image 20220424015450.png]]
+
+![[Pasted image 20220424024703.png]]
+
+Constants
+
+![[Pasted image 20220424030102.png]]
+
+we stoore bytes uisng b"" notation
+
+
+![[Pasted image 20220424030630.png]]
+
+
+constants are inlined in the assembly they dont have a memory location
+
+static have memory location and can be mutable and stays alive for the whole program
+
+
+![[Pasted image 20220424081352.png]]
+
+![[Pasted image 20220424082556.png]]
 
