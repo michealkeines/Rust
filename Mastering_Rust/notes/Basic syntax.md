@@ -288,3 +288,7 @@ static have memory location and can be mutable and stays alive for the whole pro
 
 ![[Pasted image 20220424082556.png]]
 
+![[Pasted image 20220428234557.png]]
+
+unsized typed
+

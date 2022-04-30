@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Basic syntax.md",
+            "file": "rust in action.md",
             "mode": "source",
             "source": false
           }
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Basic syntax.md",
+                "file": "rust in action.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -89,6 +89,7 @@
   },
   "active": "04ba30bb2c4da88e",
   "lastOpenFiles": [
+    "rust in action.md",
     "Basic syntax.md"
   ]
 }
