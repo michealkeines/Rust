@@ -32,3 +32,19 @@ test[i]
 
 
 
+![[Pasted image 20220509094301.png]]
+
+! makes the function never return
+
+
+if the variable is not a reference to make it mutable
+
+we can able mut keywork infront of the name
+
+fn test(mut val: String) // wihout referece
+
+fn test(val: &mut String) // with refeerence
+
+
+
+
