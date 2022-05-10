@@ -1,4 +1,8 @@
-#[derive(Debug, PartialEq)]
+use std::fmt;
+use std::fmt::Display;
+use std::fmt::Debug;
+
+#[derive(Debug)]
 enum FileState {
     Open,
     Closed
@@ -10,6 +14,52 @@ struct File {
     data: Vec<u8>,
     state: FileState
 }
+
+impl PartialEq for FileState {
+    fn eq(&self, other: &Self) -> bool {
+        let mut a = false;
+        let mut b = false;
+        println!("{:?}   {:?}", self, other);
+        match self {
+            FileState::Open => {a = true;},
+            _ => {}
+        }
+        match other {
+            FileState::Open => {b = true;},
+            _ => {}
+        }
+        if a && b {
+            true
+        } else {
+            false
+        }
+    }
+}
+
+impl Display for FileState {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            FileState::Open => write!(f, "OPEN"),
+            FileState::Closed => write!(f, "CLOSED")
+        }
+    }
+}
+
+impl Display for File {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "<{} ({})>", self.name, self.state)
+    }
+}
+
+// impl PartialEq for FileState {
+//     fn eq(&self, other: &Self) -> bool {
+//         match (self, other) {
+//             (Self::Open, Self::Open) => true,
+//             (Self::Closed, Self::Closed) => true,
+//             _ => false
+//         }
+//     }
+// }
 
 impl File {
     fn new(name: &str) -> File {
