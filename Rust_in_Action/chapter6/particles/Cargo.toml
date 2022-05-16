@@ -1,0 +1,12 @@
+[package]
+name = "particles"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+piston_window = "0.117"
+piston2d-graphics = "0.39"
+rand = "0.8"

@@ -46,5 +46,40 @@ fn test(mut val: String) // wihout referece
 fn test(val: &mut String) // with refeerence
 
 
+Floating Points
 
+![[Pasted image 20220512085821.png]]
+
+![[Pasted image 20220512085851.png]]
+
+![[Pasted image 20220516025917.png]]
+
+CELL and REFCELL
+
+Virtual Memory:
+
+Word: This corresponds to width of the CPU's registers
+
+Page: A fixed size block of words of real Memory, Typically 4 KB in size for 64bit OS
+
+
+Page Fault: An error raised by the CPU when an valid memory address is requested that is not currently in the physical RAM, this signals to the OS that at least one page must be swapped back into memory
+
+Virutal Memory: The programs view of it's Memory, All data accessible to a program is provided in tis address space by the os
+
+Real Memory: The OS's view of the physical memory available on the system.
+
+Page table: The data structure maintained by the OS to manage translating from virtual to real memory
+
+Segment: A block within virtual memory, Virtual memory is divided into blocks to minimize the space required to translate between virtual and physical addresses
+
+Segmentation fault: An error raised by the CPY when an illegal memory address is requested
+
+MMU: A component of the CPU that manages memory address translation. Maintains a cache of recently translated addresses called TLB, that is translation lookaside buffer.
+
+Virutal memory optimization to use cache
+
+![[Pasted image 20220516065404.png]]
+
+![[Pasted image 20220516065700.png]]
 
