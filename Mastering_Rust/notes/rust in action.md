@@ -83,3 +83,29 @@ Virutal memory optimization to use cache
 
 ![[Pasted image 20220516065700.png]]
 
+![[Pasted image 20220528012318.png]]
+
+Trait objects ownership
+
+![[Pasted image 20220528024947.png]]
+
+![[Pasted image 20220604073050.png]]
+
+Time NTP
+
+![[Pasted image 20220604073104.png]]
+
+Thread closure lifetimes
+
+![[Pasted image 20220605020613.png]]
+
+![[Pasted image 20220605021512.png]]
+
+join make the calliing thread to wait till its child threads finishes execution
+
+![[Pasted image 20220605023024.png]]
+
+yeild signals the os to stop sheduling the current thread util futher notice
+
+![[Pasted image 20220605025406.png]]
+
