@@ -109,3 +109,14 @@ yeild signals the os to stop sheduling the current thread util futher notice
 
 ![[Pasted image 20220605025406.png]]
 
+as per channels, we create a two objects transmitor and reciever
+
+we call tx.send() to send something to our respective reciver whihc will wait using recv() call
+
+design to crate connect bettwen two points
+
+sender_tx, sender_rx
+
+receiver_tx, receiver_rx
+
+we send the messages to sender_rx.send(), within a thread sender_rx.recv() will receive all those messages and pass it to receiver_tx.send(), and receiver_rx might be waiting for the reciver_rx in main thread or in other thread
