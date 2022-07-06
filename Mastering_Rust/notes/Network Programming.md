@@ -18,3 +18,13 @@ Macro expansion for debugging
 
 ![[Pasted image 20220616123425.png]]
 
+RPC
+
+Let a common set of operations be accessible over a network, so that validated clients can call them.
+
+It is called a  Remote Procedure Call (RPC)
+
+gRPC by Google is now a opensource
+
+It uses Protocol Buffers as data and messages are exchanged over HTTP/2
+
