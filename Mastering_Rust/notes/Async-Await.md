@@ -47,18 +47,17 @@ trait Future {
 ```
 
 
-Asynchronous programming gives us an abstraction over an task bu implementing the Future trait, that allows us a pause and start the task  untill it gets done.
+Asynchronous programming gives us an abstraction over an task by implementing the Future trait, that allows the task to yeild when it is blocked and add itself back to the exection when ready
 
-we also need someone to check on the Future for updates, an executor.
+we also need someone to check on the Future for updates when the Future beleives it is ready now.
 
-The Future can set when to start them again.
+An executor helps with the update check.
 
-so if we create two futures get_file() and extra_bytes(), and our executor will have two futures and it will poll the Future which is set to start now
+so if we create two futures get_file() and extra_bytes(), and our executor will have two futures and poll will be called by the the executor on those futtures
 
 if the Future doesnt set when to start it, the executor wont know if starting it would make any progress.
 
 thus with one thread we are able to get the illusion of the both futures running asynchronosly
-
 
 Future Trait will define the concrete type that will be returned as the result of the operation that is implementing this trait
 
@@ -75,4 +74,32 @@ Ready(Output) -> if the result of the operation is ready
 Pending -> if the operation is still going on
 
 
+Executor is just a queue, Futures are added to the que and executor will call the poll method on those futures
+
+Let's say if we add two jobs to the Executor queue
+
+To start the job, Executor will call Poll method in all the jobs in the queue
+
+every Future will have it's own implemenation of when it want itself to be added to the executor queue again.
+
+In Rust word,
+
+Executor will be a Receiver Stream and user adds the Futures into tthe stream to start the operation.
+
+Example:
+
+![[Pasted image 20220716213622.png]]
+
+TimerFuture is the job that needs to be run
+
+![[Pasted image 20220716213713.png]]
+
+It implements the Future Trait, everytime when the executor call this poll method, it will check if the shared_state is completed or it will clone the waker passed by the executor to push itself again into the stream when it is ready
+
+
+![[Pasted image 20220716214002.png]]
+
+The job in the Future is very simple, it sleeps for the duration that is passed and calls the wake method in the waker that it cloned when the poll was initially called for this Future
+
+wake method will add this Future again to the executor stream and this time when the executor calls poll, the job will completed with ready state.
 
