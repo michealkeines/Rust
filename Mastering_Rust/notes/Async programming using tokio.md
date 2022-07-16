@@ -18,3 +18,12 @@ An type must specify the item and error and also implement the poll methof that 
 
 ![[Pasted image 20220706122708.png]]
 
+
+Streams:
+
+If Future corresponds to  Result, a Stream corresponds to Iterator
+
+![[Pasted image 20220707090102.png]]
+
+The only difference is that the return type is wrapped in an option, exactly like the iterator trait, thus a none here would indicate that the stream has terminated
+
