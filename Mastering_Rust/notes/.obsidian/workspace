@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Async-Await.md",
+            "file": "Linkerd/Service Mesh.md",
             "mode": "source",
             "source": false
           }
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Async-Await.md",
+                "file": "Linkerd/Service Mesh.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -89,11 +89,15 @@
   },
   "active": "00fbf60f529d2506",
   "lastOpenFiles": [
-    "Async programming using tokio.md",
-    "Basic syntax.md",
-    "cargo build.md",
-    "rust in action.md",
-    "Network Programming.md",
-    "Concurreny terms.md"
+    "Linkerd/Basics.md",
+    "os-dev/exceptions handling.md",
+    "macros.md",
+    "os-dev/x86 I-O ports.md",
+    "os-dev/Os-dev.md",
+    "sync/Async-Await.md",
+    "sync/Async programming using tokio.md",
+    "basics/Basic syntax.md",
+    "basics/cargo build.md",
+    "basics/rust in action.md"
   ]
 }
